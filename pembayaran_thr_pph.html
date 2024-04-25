@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Pembayaran THR</title>
+    <!-- 2226240003_Jenifer Gunawan -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .input-group label {
+            margin-bottom: 5px;
+        }
+    
+        .input-group input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid gray;
+        }
+    
+        .button {
+        background-color: green;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+        background-color: red; 
+        }
+
+        #output {
+            margin-top: 20px;
+            border: 1px solid gray;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    
+        .explanation {
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+    </head>
+    
+    <body>
+        <div class="input-group">
+            <label for="gajiPokok">Gaji Pokok:</label>
+            <input type="number" id="gajiPokok">
+        </div>
+        <div class="input-group">
+            <label for="tunjangan">Tunjangan Tetap:</label>
+            <input type="number" id="tunjangan">
+        </div>
+        <div class="input-group">
+            <label for="masaKerja">Masa Kerja (bulan):</label>
+            <input type="number" id="masaKerja">
+        </div>
+        <button class="button" onclick="hitungTHR()">Hitung THR</button>
+    
+        <p id="output"></p>
+    
+        <div class="explanation">
+            <h3>Penjelasan Perhitungan:</h3>
+            <p><strong>Total Gaji (Total Gaji) :</strong> Gaji Pokok + Tunjangan Tetap</p>
+            <p><strong>THR :</strong> Diberikan 1 bulan full dengan nominal sesuai dengan Total Gaji jika Masa Kerja minimal 12 bulan. Untuk karyawan dengan masa kerja kurang dari 12 bulan, THR dihitung sebagai (Masa Kerja / 12) x Total Gaji 1 bulan.</p>
+            <p><strong>PPH (Pajak Penghasilan Ps. 21) :</strong> Tarif pajak adalah 5% dari Total Gaji. PPH dikenakan pada penghasilan di atas PTKP (Pendapatan Tidak Kena Pajak) sebesar Rp. 4.500.000.</p>
+            <p><strong>Total Pembayaran :</strong> Akumulasi THR dan PPH.</p>
+        </div>
+    
+        <script>
+        function hitungTHR() {
+        var gajiPokok = parseFloat(document.getElementById('gajiPokok').value);
+        var tunjangan = parseFloat(document.getElementById('tunjangan').value);
+        var masaKerja = parseFloat(document.getElementById('masaKerja').value);
+    
+        var totalGaji = gajiPokok + tunjangan;
+        var THR = 0;
+
+        if (masaKerja >= 12) {
+            THR = totalGaji; // THR = Total Gaji jika masa kerja >= 12 bulan
+        } else if (masaKerja < 12 && masaKerja >= 1) {
+            THR = (masaKerja / 12) * totalGaji; // THR = (Masa Kerja / 12) * Total Gaji 1 bulan jika masa kerja di bawah 12 bulan
+        }
+
+        var PPH = 0;
+        if (totalGaji > 4500000) {
+        PPH = (totalGaji - 4500000) * 0.05; // PPH = 5% dari total gaji di atas PTKP (Rp 4.500.000)
+        }
+
+        var totalPembayaran = THR + PPH;
+
+        var output = "Total Gaji: Rp " + totalGaji.toFixed(2) + "<br>";
+        output += "THR: Rp " + THR.toFixed(2) + "<br>";
+        output += "PPH: Rp " + PPH.toFixed(2) + "<br>";
+        output += "Total Pembayaran: Rp " + totalPembayaran.toFixed(2);
+
+        document.getElementById('output').innerHTML = output;
+        }
+
+    </script>
+    </body>
+    </html>
